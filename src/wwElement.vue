@@ -1,11 +1,49 @@
 <template>
-    <wwLayout class="pf-list" path="items"></wwLayout>
+    <draggable v-model="items" :itemKey="getItemKey" :disabled="isEditing" tag="wwSimpleLayout">
+        <template #item="{ element }">
+            <div>
+                <wwLayoutItemContext is-repeat :data="element">
+                    <wwElement v-bind="content.itemContainer" />
+                </wwLayoutItemContext>
+            </div>
+        </template>
+    </draggable>
 </template>
 
 <script>
+import draggable from "vuedraggable";
 export default {
+    components: { draggable },
     props: {
         content: { type: Object, required: true },
+        wwEditorState: { type: Object, default: null },
+    },
+    emits: ["trigger-event"],
+    computed: {
+        items: {
+            get() {
+                return wwLib.wwCollection.getCollectionData(this.content.items) || [];
+            },
+            set(value) {
+                this.$emit("trigger-event", { name: "update:list", payload: { value } });
+            },
+        },
+        isEditing() {
+            return this.wwEditorState?.isEditing;
+        },
+    },
+    methods: {
+        getItemKey(item) {
+            wwLib.resolveObjectPropertyPath(item, this.content.idPath || "id");
+        },
+        /* wwEditor:start */
+        getTestEvent() {
+            const data = wwLib.wwCollection.getCollectionData(this.content.items);
+            return {
+                value: data,
+            };
+        },
+        /* wwEditor:end */
     },
 };
 </script>
