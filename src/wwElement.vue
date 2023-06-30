@@ -1,5 +1,5 @@
 <template>
-    <ul class="pf-list"></ul>
+    <wwLayout class="pf-list" path="items"></wwLayout>
 </template>
 
 <script>
