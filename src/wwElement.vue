@@ -1,5 +1,14 @@
 <template>
-    <draggable v-model="items" :itemKey="getItemKey" :disabled="isEditing" tag="wwSimpleLayout" v-bind="options">
+    <draggable
+        v-model="items"
+        :itemKey="getItemKey"
+        :disabled="isEditing"
+        :animation="200"
+        tag="wwSimpleLayout"
+        @start="dragging = true"
+        @end="dragging = false"
+        v-bind="options"
+    >
         <template #item="{ element, index }">
             <div>
                 <wwLayoutItemContext is-repeat :data="element" :item="null" :index="index">
@@ -11,6 +20,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import draggable from "vuedraggable";
 export default {
     components: { draggable },
@@ -19,6 +29,9 @@ export default {
         wwEditorState: { type: Object, default: null },
     },
     emits: ["trigger-event"],
+    setup() {
+        return { dragging: ref(false), layoutStyle: wwLib.useLayoutStyle() };
+    },
     computed: {
         items: {
             get() {
@@ -33,7 +46,7 @@ export default {
         },
         options() {
             const options = {};
-            if (this.content.handle) {
+            if (this.content.handle?.length) {
                 options.handle = `.${this.content.handle}`;
             }
             if (this.content.group) {
@@ -58,5 +71,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped></style>

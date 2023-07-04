@@ -32,6 +32,7 @@ export default {
             options: {
                 text: { en: "Elements to repeat" },
             },
+            // defaultValue: { __wwtype: "f", code: "variables['93b8b0a2-7d31-4cb5-bd39-2b333ec8b595']" },
         },
         idPath: {
             label: {
@@ -59,11 +60,11 @@ export default {
         },
         itemContainer: {
             hidden: true,
-            // defaultValue: {
-            //     isWwObject: true,
-            //     type: "ww-flexbox",
-            //     _state: { classes: { default: ["7dd87252-2873-4924-b85a-0cd3443e23eb"] } },
-            // },
+            defaultValue: {
+                isWwObject: true,
+                type: "ww-flexbox",
+                // _state: { classes: { default: ["7dd87252-2873-4924-b85a-0cd3443e23eb"] } },
+            },
         },
     },
 };
