@@ -24,7 +24,7 @@ export default {
         },
     ],
     properties: {
-        items: {
+        data: {
             bindable: true,
             section: "settings",
             label: "Items",
@@ -43,10 +43,27 @@ export default {
             }),
             hidden: (content) => !hasData(content),
             section: "settings",
+            // defaultValue: "['id']",
+        },
+        handle: {
+            label: "Handle class",
+            type: "Text",
+            section: "settings",
+            // defaultValue: "handle",
+        },
+        group: {
+            label: "Group Id",
+            type: "Text",
+            section: "settings",
+            // defaultValue: "artist",
         },
         itemContainer: {
             hidden: true,
-            defaultValue: { isWwObject: true, type: "ww-flexbox" },
+            // defaultValue: {
+            //     isWwObject: true,
+            //     type: "ww-flexbox",
+            //     _state: { classes: { default: ["7dd87252-2873-4924-b85a-0cd3443e23eb"] } },
+            // },
         },
     },
 };

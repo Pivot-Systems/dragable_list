@@ -1,8 +1,8 @@
 <template>
-    <draggable v-model="items" :itemKey="getItemKey" :disabled="isEditing" tag="wwSimpleLayout">
-        <template #item="{ element }">
+    <draggable v-model="items" :itemKey="getItemKey" :disabled="isEditing" tag="wwSimpleLayout" v-bind="options">
+        <template #item="{ element, index }">
             <div>
-                <wwLayoutItemContext is-repeat :data="element">
+                <wwLayoutItemContext is-repeat :data="element" :item="null" :index="index">
                     <wwElement v-bind="content.itemContainer" />
                 </wwLayoutItemContext>
             </div>
@@ -22,14 +22,25 @@ export default {
     computed: {
         items: {
             get() {
-                return wwLib.wwCollection.getCollectionData(this.content.items) || [];
+                return wwLib.wwCollection.getCollectionData(this.content.data) || [];
             },
             set(value) {
-                this.$emit("trigger-event", { name: "update:list", payload: { value } });
+                this.$emit("trigger-event", { name: "update:list", event: { value } });
             },
         },
         isEditing() {
             return this.wwEditorState?.isEditing;
+        },
+        options() {
+            const options = {};
+            if (this.content.handle) {
+                options.handle = `.${this.content.handle}`;
+            }
+            if (this.content.group) {
+                options.group = this.content.group;
+            }
+
+            return options;
         },
     },
     methods: {
@@ -38,7 +49,7 @@ export default {
         },
         /* wwEditor:start */
         getTestEvent() {
-            const data = wwLib.wwCollection.getCollectionData(this.content.items);
+            const data = wwLib.wwCollection.getCollectionData(this.content.data);
             return {
                 value: data,
             };
