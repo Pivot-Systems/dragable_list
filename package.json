@@ -1,6 +1,6 @@
 {
     "name": "pf-list",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "scripts": {
         "build": "weweb build",
         "serve": "weweb serve"
@@ -9,6 +9,6 @@
         "@weweb/cli": "latest"
     },
     "dependencies": {
-        "vuedraggable": "AurelieV/vue.draggable.next"
+        "vuedraggable": "^4.1.0"
     }
 }
