@@ -4,7 +4,7 @@
         :itemKey="getItemKey"
         :disabled="isEditing"
         :animation="200"
-        tag="wwSimpleLayout"
+        :style="{ ...$attrs.style, ...layoutStyle }"
         @start="dragging = true"
         @end="dragging = false"
         v-bind="options"
