@@ -5,8 +5,6 @@
         :disabled="isEditing"
         :animation="200"
         :style="{ ...$attrs.style, ...layoutStyle }"
-        @start="dragging = true"
-        @end="dragging = false"
         v-bind="options"
     >
         <template #item="{ element, index }">
@@ -20,8 +18,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import draggable from "vuedraggable";
+
 export default {
     components: { draggable },
     props: {
@@ -30,7 +28,7 @@ export default {
     },
     emits: ["trigger-event"],
     setup() {
-        return { dragging: ref(false), layoutStyle: wwLib.useLayoutStyle() };
+        return { layoutStyle: wwLib.useLayoutStyle() };
     },
     computed: {
         items: {

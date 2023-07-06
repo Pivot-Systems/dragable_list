@@ -9,6 +9,6 @@
         "@weweb/cli": "latest"
     },
     "dependencies": {
-        "vuedraggable": "4.1.0"
+        "vuedraggable": "AurelieV/vue.draggable.next"
     }
 }
