@@ -35,6 +35,7 @@ export default {
             // defaultValue: { __wwtype: "f", code: "variables['93b8b0a2-7d31-4cb5-bd39-2b333ec8b595']" },
         },
         idPath: {
+            
             label: {
                 en: "Unique id",
             },
@@ -47,12 +48,14 @@ export default {
             // defaultValue: "['id']",
         },
         handle: {
+            bindable: true,
             label: "Handle class",
             type: "Text",
             section: "settings",
             // defaultValue: "handle",
         },
         group: {
+            bindable: true,
             label: "Group Id",
             type: "Text",
             section: "settings",
