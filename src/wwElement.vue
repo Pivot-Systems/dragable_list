@@ -1,12 +1,13 @@
 <template>
     <draggable
-        v-model="internalItems"
+        v-model="items"
         :itemKey="getItemKey"
         :disabled="isEditing"
         :animation="200"
         :style="{ ...$attrs.style, ...layoutStyle }"
         v-bind="options"
         @change="onDragChange"
+        :data-group-id="content.group" 
     >
         <template #item="{ element, index }">
             <div>
@@ -31,12 +32,15 @@ export default {
     setup() {
         return { layoutStyle: wwLib.useLayoutStyle() };
     },
-    data() {
-        return {
-            internalItems: [],
-        };
-    },
     computed: {
+        items: {
+            get() {
+                return wwLib.wwCollection.getCollectionData(this.content.data) || [];
+            },
+            set(value) {
+                this.$emit("trigger-event", { name: "update:list", event: { value } });
+            },
+        },
         isEditing() {
             return this.wwEditorState?.isEditing;
         },
@@ -48,18 +52,8 @@ export default {
             if (this.content.group) {
                 options.group = this.content.group;
             }
+
             return options;
-        },
-    },
-    watch: {
-        // Keep internalItems in sync with external changes
-        'content.data': {
-            handler(newVal) {
-                const items = wwLib.wwCollection.getCollectionData(newVal) || [];
-                this.internalItems = [...items];
-            },
-            immediate: true,
-            deep: true,
         },
     },
     methods: {
@@ -68,18 +62,30 @@ export default {
         },
         /* wwEditor:start */
         getTestEvent() {
+            const data = wwLib.wwCollection.getCollectionData(this.content.data);
             return {
-                value: this.internalItems,
+                value: data,
             };
         },
         /* wwEditor:end */
         onDragChange(evt) {
-            // Force update to trigger WeWeb
-            this.$emit("trigger-event", {
-                name: "update:list",
-                event: { value: [...this.internalItems] },
-            });
-        },
+            // If an item was removed (i.e. dragged out of this list)
+            if (evt.removed) {
+                const movedItem = evt.removed.element;
+                const toGroup = evt.to?.dataset?.groupId || null;
+                const toIndex = evt.newIndex;
+
+                this.$emit("trigger-event", {
+                    name: "update:list",
+                    event: {
+                        value: [...this.items], // current items after removal
+                        movedItem,
+                        toGroup,
+                        toIndex,
+                    },
+                });
+            }
+        }
     },
 };
 </script>
