@@ -53,6 +53,7 @@ export default {
             // defaultValue: "handle",
         },
         group: {
+            bindable: true,
             label: "Group Id",
             type: "Text",
             section: "settings",
