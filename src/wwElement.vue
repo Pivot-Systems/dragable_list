@@ -6,6 +6,8 @@
         :animation="200"
         :style="{ ...$attrs.style, ...layoutStyle }"
         v-bind="options"
+        @change="onDragChange"
+        :data-group-id="content.group" 
     >
         <template #item="{ element, index }">
             <div>
@@ -56,7 +58,7 @@ export default {
     },
     methods: {
         getItemKey(item) {
-            wwLib.resolveObjectPropertyPath(item, this.content.idPath || "id");
+            return wwLib.resolveObjectPropertyPath(item, this.content.idPath || "id");
         },
         /* wwEditor:start */
         getTestEvent() {
@@ -66,6 +68,17 @@ export default {
             };
         },
         /* wwEditor:end */
+        onDragChange(evt) {
+            // Force emit on the destination list after an item is added
+            if (evt.added) {
+                // Replace the items array with a clone to force reactivity
+                const newList = [...this.items];
+                this.$emit("trigger-event", {
+                    name: "update:list",
+                    event: { value: newList },
+                });
+            }
+        }
     },
 };
 </script>
